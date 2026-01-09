@@ -7,6 +7,7 @@ import morgan from 'morgan';
 // Import routes
 import waitlistRoutes from './routes/waitlist.routes.js';
 import whatsappRoutes from './routes/whatsapp.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -50,6 +51,8 @@ app.get('/', (req, res) => {
 // API Routes - Waitlist landing endpoints only
 app.use('/api/v1/waitlist', waitlistRoutes);
 app.use('/api/v1/whatsapp', whatsappRoutes);
+// Admin debug routes (protected by ADMIN_TOKEN)
+app.use('/admin', adminRoutes);
 
 // Error handling
 app.use((req, res) => {
