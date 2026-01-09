@@ -1,7 +1,9 @@
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 // Lazy transporter - created on demand
 let transporter = null;
+let resendClient = null;
 
 // Create transporter based on environment
 const createTransporter = () => {
@@ -9,8 +11,20 @@ const createTransporter = () => {
   console.log('📧 EMAIL_SERVICE:', process.env.EMAIL_SERVICE);
   console.log('📧 EMAIL_USER:', process.env.EMAIL_USER);
   console.log('📧 Has EMAIL_PASSWORD:', !!process.env.EMAIL_PASSWORD);
+  console.log('📧 Has RESEND_API_KEY:', !!process.env.RESEND_API_KEY);
   
-  // Option 1: Gmail (for testing)
+  // Option 1: Resend (recommended for production)
+  if (process.env.EMAIL_SERVICE === 'resend') {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('❌ RESEND_API_KEY is required for Resend service');
+      return null;
+    }
+    console.log('📧 Configuring Resend client');
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+    return 'resend'; // Return marker for Resend
+  }
+  
+  // Option 2: Gmail (for testing)
   if (process.env.EMAIL_SERVICE === 'gmail') {
     console.log('📧 Configuring Gmail transporter');
     return nodemailer.createTransport({
@@ -71,6 +85,65 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
     return { success: false, message: 'Email service not configured' };
   }
 
+  // Handle Resend separately
+  if (transporter === 'resend' && resendClient) {
+    const positionText = position ? `<p style="font-size: 18px; font-weight: bold; color: #667eea; text-align: center; margin: 20px 0;">📊 You are number ${position} on the waitlist!</p>` : '';
+
+    try {
+      const result = await resendClient.emails.send({
+        from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+        to: email,
+        subject: 'Welcome to Pointhed Waitlist! 🎉',
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+              .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+              .button { display: inline-block; background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+              .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1>🎉 You're on the Waitlist!</h1>
+              </div>
+              <div class="content">
+                <p>Hi there!</p>
+                <p>Thanks for joining the Pointhed waitlist. We're excited to have you on board! 🚀</p>
+                ${positionText}
+                <p>We're working hard to bring you the best customer loyalty platform for businesses. You'll be among the first to know when we launch.</p>
+                <p><strong>What happens next?</strong></p>
+                <ul>
+                  <li>We'll keep you updated on our progress</li>
+                  <li>You'll get early access when we launch</li>
+                  <li>Special offers for early adopters</li>
+                </ul>
+                <p>In the meantime, want to try our instant demo?</p>
+                <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" class="button">Try Instant Demo</a>
+              </div>
+              <div class="footer">
+                <p>© ${new Date().getFullYear()} Pointhed. All rights reserved.</p>
+                <p>If you didn't sign up for this, you can safely ignore this email.</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+      console.log('✅ Resend email sent successfully:', result.id);
+      return { success: true, messageId: result.id };
+    } catch (error) {
+      console.error('❌ Error sending email via Resend:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Handle nodemailer (Gmail, SendGrid, SMTP)
   const positionText = position ? `<p style="font-size: 18px; font-weight: bold; color: #667eea; text-align: center; margin: 20px 0;">📊 You are number ${position} on the waitlist!</p>` : '';
   const positionTextPlain = position ? `\n📊 You are number ${position} on the waitlist!\n` : '';
 
@@ -78,7 +151,7 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
     const mailOptions = {
       from: process.env.EMAIL_FROM || 'noreply@loyolq.com',
       to: email,
-      subject: 'Welcome to Loyolq Waitlist! 🎉',
+      subject: 'Welcome to Pointhed Waitlist! 🎉',
       html: `
         <!DOCTYPE html>
         <html>
@@ -99,7 +172,7 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
             </div>
             <div class="content">
               <p>Hi there!</p>
-              <p>Thanks for joining the Loyolq waitlist. We're excited to have you on board! 🚀</p>
+              <p>Thanks for joining the Pointhed waitlist. We're excited to have you on board! 🚀</p>
               ${positionText}
               <p>We're working hard to bring you the best customer loyalty platform for businesses. You'll be among the first to know when we launch.</p>
               <p><strong>What happens next?</strong></p>
@@ -112,7 +185,7 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
               <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" class="button">Try Instant Demo</a>
             </div>
             <div class="footer">
-              <p>© ${new Date().getFullYear()} Loyolq. All rights reserved.</p>
+                <p>© ${new Date().getFullYear()} Pointhed. All rights reserved.</p>
               <p>If you didn't sign up for this, you can safely ignore this email.</p>
             </div>
           </div>
@@ -120,9 +193,9 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
         </html>
       `,
       text: `
-Welcome to Loyolq Waitlist!
+Welcome to Pointhed Waitlist!
 
-Thanks for joining the Loyolq waitlist. We're excited to have you on board!
+Thanks for joining the Pointhed waitlist. We're excited to have you on board!
 ${positionTextPlain}
 We're working hard to bring you the best customer loyalty platform for businesses. You'll be among the first to know when we launch.
 
@@ -133,7 +206,7 @@ What happens next?
 
 Visit ${process.env.FRONTEND_URL || 'http://localhost:5173'} to try our instant demo.
 
-© ${new Date().getFullYear()} Loyolq. All rights reserved.
+© ${new Date().getFullYear()} Pointhed. All rights reserved.
       `.trim(),
     };
 
