@@ -59,10 +59,15 @@ export const joinWaitlist = async (req, res, next) => {
     console.log('📊 Waitlist position:', position);
 
     // Send confirmation email (non-blocking)
-    sendWaitlistConfirmation(email, position).catch(err => {
-      console.error('⚠️  Failed to send confirmation email:', err);
-      // Don't fail the request if email fails
-    });
+    console.log('📧 Attempting to send confirmation email to:', email);
+    sendWaitlistConfirmation(email, position)
+      .then(result => {
+        console.log('📧 Email send result:', result);
+      })
+      .catch(err => {
+        console.error('⚠️  Failed to send confirmation email:', err);
+        // Don't fail the request if email fails
+      });
 
     return res.status(201).json({ 
       success: true, 
