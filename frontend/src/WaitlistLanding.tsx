@@ -47,7 +47,7 @@ export function WaitlistLanding() {
     : true; // default to true for QA safety
   const HIDE_JOIN = typeof import.meta.env.VITE_HIDE_JOIN !== 'undefined'
     ? String(import.meta.env.VITE_HIDE_JOIN).toLowerCase() === 'true'
-    : true; // default to true (hide)
+    : false; // default to false so Join is visible when unset
 
   
 
@@ -360,7 +360,7 @@ export function WaitlistLanding() {
   
 
   return (
-    <div className="waitlist-scope min-h-screen bg-white text-gray-900 overflow-hidden">
+    <div className="waitlist-scope min-h-screen bg-white text-gray-900 overflow-x-hidden overflow-y-auto">
       {/* Ambient background gradient */}
       <div className="fixed inset-0 pointer-events-none" />
       
@@ -372,11 +372,11 @@ export function WaitlistLanding() {
       <div className="relative">
         {/* Header */}
         <header className="backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-6 flex items-center justify-between max-w-7xl">
+          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between max-w-7xl">
             <div className="flex items-center gap-2">
-              <img src={LogoText} alt="Pointhed" className="h-6" />
+              <img src={LogoText} alt="Pointhed" className="h-5 sm:h-6" />
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               {/* <a
               href="#rewards"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -413,8 +413,8 @@ export function WaitlistLanding() {
         </header>
 
         {/* Hero Section */}
-        <section className="container mx-auto px-4 py-10 max-w-7xl">
-          <div className="space-y-10 text-center">
+        <section className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 max-w-7xl">
+          <div className="space-y-6 sm:space-y-10 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-gray-50 mx-auto">
               <div className="size-1.5 rounded-full bg-green-400 animate-pulse" />
               <span className="text-xs font-mono text-gray-700 tracking-wide">
@@ -422,12 +422,13 @@ export function WaitlistLanding() {
               </span>
             </div>
 
-            <h1 className="mx-auto text-3xl sm:text-4xl md:text-5xl hero-title font-normal tracking-tight leading-tight max-w-5xl text-gray-600">
+            <h1 className="mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl hero-title font-normal tracking-tight leading-tight max-w-5xl text-gray-600 px-2">
               You're losing customers.
               <br />
               <span className="text-gray-900 text-left">
-                Pointhed knows{' '}
-                <span className="inline-block min-w-[8em] text-left">
+                Pointhed knows
+                <br className="sm:hidden" />{' '}
+                <span className="inline-block min-w-[6em] sm:min-w-[8em] text-left">
                   {displayText}
                   <span className="animate-pulse">|</span>
                 </span>
@@ -435,7 +436,7 @@ export function WaitlistLanding() {
             </h1>
 
             <p
-              className="text-lg text-gray-600 max-w-4xl mx-auto -mt-4"
+              className="text-base sm:text-lg text-gray-600 max-w-4xl mx-auto -mt-2 sm:-mt-4 px-4"
               style={{
               fontFamily: "'Host Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
               whiteSpace: 'normal',
@@ -444,7 +445,8 @@ export function WaitlistLanding() {
               }}
             >
               Make every interaction drive repeat business.
-              <br />
+              <br className="hidden sm:block" />
+              <span className="sm:inline"> </span>
               WhatsApp-delivered offers and timely nudges that increase lifetime value.
             </p>
 
@@ -492,10 +494,16 @@ export function WaitlistLanding() {
                       <p className="text-sm text-gray-600 leading-relaxed max-w-2xl mx-auto">
                         {ctaMode === 'instant' ? (
                           <>
-                            Upon entry, our system initiates a WhatsApp handshake. 
+                            Upon entry, our system initiates a WhatsApp handshake.
                             You'll receive a message template within 8 seconds. This is the actual system.
                           </>
-                        ) : null}
+                        ) : (
+                          <>
+                            Request early access to Pointhed and secure your slot.
+                            <br />
+                            We'll email credentials, onboarding, and success criteria within 48 hours.
+                          </>
+                        )}
                       </p>
                     )}
 
@@ -571,13 +579,13 @@ export function WaitlistLanding() {
                       </div>
                     )}
 
-                    <form id="hero-waitlist-form" onSubmit={handleSubmit} className="flex gap-3 max-w-lg mx-auto justify-center">
+                    <form id="hero-waitlist-form" onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto justify-center px-4">
                       {(!DISABLE_INSTANT && ctaMode === 'instant') ? (
-                        <div className="flex items-center gap-2 flex-1">
+                        <div className="flex items-center gap-2 w-full sm:flex-1">
                           <select
                             value={countryCode}
                             onChange={(e) => setCountryCode(e.target.value)}
-                            className="appearance-none leading-none bg-white border border-gray-200 text-gray-900 text-sm h-12 px-3 pr-8 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjMTExODI3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_0.75rem_center] bg-no-repeat"
+                            className="appearance-none leading-none bg-white border border-gray-200 text-gray-900 text-sm h-12 px-2 sm:px-3 pr-8 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjMTExODI3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_0.75rem_center] bg-no-repeat"
                           >
                             {countryCodes.map((country, index) => (
                               <option key={index} value={country.code}>
@@ -605,12 +613,12 @@ export function WaitlistLanding() {
                           onChange={(e) => { setEmail(e.target.value); setErrorMessage(null); setSuccessMessage(null); setInfoMessage(null); }}
                           placeholder="enterprise@domain.com"
                           required
-                          className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 font-mono text-sm h-12"
+                          className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 font-mono text-sm h-12 w-full sm:flex-1"
                         />
                       )} 
                       <Button
                         type="submit"
-                        className="bg-[var(--primary)] text-[var(--primary-foreground)] h-12 px-8 font-medium tracking-tight whitespace-nowrap"
+                        className="bg-[var(--primary)] text-[var(--primary-foreground)] h-12 px-6 sm:px-8 font-medium tracking-tight whitespace-nowrap w-full sm:w-auto hover:opacity-90 transition-opacity"
                       >
                         {isSending ? 'Sending...' : (ctaMode === 'instant' ? 'Experience Now' : 'Request Access')}
                         <ArrowRight className="size-4 ml-2" />
@@ -622,7 +630,7 @@ export function WaitlistLanding() {
             </div>
           </div>
 
-            <div className="mt-12 grid grid-cols-1 lg:grid-cols-[70%_30%] gap-8 items-start">
+            <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6 sm:gap-8 items-start">
             <div className="rounded-2xl overflow-hidden">
               <ImageWithFallback
               src={HeroImage}
@@ -645,18 +653,18 @@ export function WaitlistLanding() {
         </section>
 
         {/* Rewards System Section */}
-        <section id="rewards" className="container mx-auto px-4 py-24 max-w-7xl">
-          <div className="space-y-16">
+        <section id="rewards" className="container mx-auto px-4 sm:px-6 py-12 sm:py-24 max-w-7xl">
+          <div className="space-y-10 sm:space-y-16">
             {/* Section Header */}
             <div className="text-center space-y-4 max-w-3xl mx-auto">
-                <h2 className="hero-title text-4xl md:text-5xl font-normal tracking-tight">
+                <h2 className="hero-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight">
                 Loyalty rewards that
                 <br />
                 <span className="text-gray-900">
                   customers actually use
                 </span>
                 </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed px-4">
                 Traditional loyalty programs suffer from 70% dormancy rates. 
                 Pointhed deploys rewards where attention lives — inside WhatsApp conversations. 
                 Zero friction. Maximum activation.
@@ -664,7 +672,7 @@ export function WaitlistLanding() {
             </div>
 
             {/* Visual Grid */}
-            <div className="grid md:grid-cols-3 gap-x-6 gap-y-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-x-6 md:gap-y-0">
               {/* Card 1 */}
               <Card className="bg-[#F7F8FF] overflow-hidden group transition-all border-transparent gap-y-0">
               <div className="aspect-[4/3] relative overflow-hidden">
@@ -740,22 +748,23 @@ export function WaitlistLanding() {
           </div>
         </section>
 
-        <section className="container mx-4 sm:mx-6 md:mx-auto px-8 py-20 max-w-7xl rounded-2xl overflow-hidden bg-[#161616]">
-          <div className="mx-auto px-4 max-w-7xl space-y-6">
-            <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl tracking-tight hero-title font-normal text-white">
-              Revenue Impact Calculator
-              </h2>
+        <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 max-w-7xl">
+          <div className="rounded-2xl overflow-hidden bg-[#161616] px-4 sm:px-8 py-8 sm:py-12">
+            <div className="mx-auto max-w-7xl space-y-6">
+              <div className="space-y-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl tracking-tight hero-title font-normal text-white">
+                Revenue Impact Calculator
+                </h2>
               <p className="text-gray-400 leading-relaxed text-lg">
               Real data. Real conversion mechanics. Zero speculation.
               </p>
             </div>
 
             {/* Calculator Card */}
-            <Card className="border-[#2C2C2C] bg-transparent p-8 md:p-12">
-              <div className="grid md:grid-cols-2 gap-12">
+            <Card className="border-[#2C2C2C] bg-transparent p-4 sm:p-8 md:p-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
           {/* Inputs */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Currency Selector */}
             <div className="space-y-3">
               <Label className="text-sm font-medium text-white">
@@ -789,15 +798,17 @@ export function WaitlistLanding() {
             {monthlyCustomers.toLocaleString()}
                 </span>
               </div>
-              <input
-                type="range"
-                min="100"
-                max="5000"
-                step="50"
-                value={monthlyCustomers}
-                onChange={(e) => setMonthlyCustomers(Number(e.target.value))}
-                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              />
+              <div className="px-2 py-2">
+                <input
+                  type="range"
+                  min="100"
+                  max="5000"
+                  step="50"
+                  value={monthlyCustomers}
+                  onChange={(e) => setMonthlyCustomers(Number(e.target.value))}
+                  className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                />
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -809,15 +820,17 @@ export function WaitlistLanding() {
             {formatCurrency(avgOrderValue)}
                 </span>
               </div>
-              <input
-                type="range"
-                min={getCurrentCurrencyConfig().min}
-                max={getCurrentCurrencyConfig().max}
-                step={getCurrentCurrencyConfig().step}
-                value={avgOrderValue}
-                onChange={(e) => setAvgOrderValue(Number(e.target.value))}
-                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              />
+              <div className="px-2 py-2">
+                <input
+                  type="range"
+                  min={getCurrentCurrencyConfig().min}
+                  max={getCurrentCurrencyConfig().max}
+                  step={getCurrentCurrencyConfig().step}
+                  value={avgOrderValue}
+                  onChange={(e) => setAvgOrderValue(Number(e.target.value))}
+                  className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                />
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -829,15 +842,17 @@ export function WaitlistLanding() {
             {purchaseFrequency.toFixed(1)}×
                 </span>
               </div>
-              <input
-                type="range"
-                min="1"
-                max="24"
-                step="0.5"
-                value={purchaseFrequency}
-                onChange={(e) => setPurchaseFrequency(Number(e.target.value))}
-                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              />
+              <div className="px-2 py-2">
+                <input
+                  type="range"
+                  min="1"
+                  max="24"
+                  step="0.5"
+                  value={purchaseFrequency}
+                  onChange={(e) => setPurchaseFrequency(Number(e.target.value))}
+                  className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                />
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -849,15 +864,17 @@ export function WaitlistLanding() {
             {engagementRate}%
                 </span>
               </div>
-              <input
-                type="range"
-                min="15"
-                max="60"
-                step="5"
-                value={engagementRate}
-                onChange={(e) => setEngagementRate(Number(e.target.value))}
-                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              />
+              <div className="px-2 py-2">
+                <input
+                  type="range"
+                  min="15"
+                  max="60"
+                  step="5"
+                  value={engagementRate}
+                  onChange={(e) => setEngagementRate(Number(e.target.value))}
+                  className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                />
+              </div>
               <p className="text-xs text-gray-400 leading-relaxed">
                 % of customers who actively engage with loyalty features
               </p>
@@ -874,7 +891,7 @@ export function WaitlistLanding() {
           </div>
 
           {/* Output */}
-          <div className="flex flex-col justify-center space-y-6">
+          <div className="flex flex-col justify-center space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <p className="text-sm font-mono text-gray-500 uppercase tracking-wider">
                 Current Annual Revenue
@@ -936,6 +953,7 @@ export function WaitlistLanding() {
               </div>
             </Card>
           </div>
+        </div>
         </section>
 
         {false && (
@@ -1052,7 +1070,7 @@ export function WaitlistLanding() {
                   Pointhed © {new Date().getFullYear()}
                 </span>
               </div>
-              <div className="flex items-center gap-8 text-sm text-gray-500">
+              {/* <div className="flex items-center gap-8 text-sm text-gray-500">
                 <a href="#" className="text-gray-500 hover:text-gray-900 transition-colors">
                   Documentation
                 </a>
@@ -1062,7 +1080,7 @@ export function WaitlistLanding() {
                 <a href="#" className="text-gray-500 hover:text-gray-900 transition-colors">
                   Contact
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </footer>
@@ -1075,6 +1093,15 @@ export function WaitlistLanding() {
           --primary-foreground: #ffffff;
           --sidebar-primary: #161616;
           --sidebar-primary-foreground: #ffffff;
+        }
+        body, html {
+          overflow-x: hidden;
+          max-width: 100vw;
+        }
+        .slider {
+          touch-action: pan-x;
+          -webkit-user-select: none;
+          user-select: none;
         }
         .slider::-webkit-slider-thumb {
           appearance: none;
