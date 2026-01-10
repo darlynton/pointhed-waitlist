@@ -87,13 +87,13 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
 
   // Handle Resend separately
   if (transporter === 'resend' && resendClient) {
-    const positionText = position ? `<p style="font-size: 18px; font-weight: bold; color: #667eea; text-align: center; margin: 20px 0;">📊 You are number ${position} on the waitlist!</p>` : '';
+    const positionText = position ? `<p style="font-size: 18px; font-weight: bold; color: #264EFF; text-align: center; margin: 20px 0;">You are number ${position} on the waitlist!</p>` : '';
 
     try {
       const result = await resendClient.emails.send({
         from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
         to: email,
-        subject: 'Welcome to Pointhed Waitlist! 🎉',
+        subject: 'Welcome to Pointhed Waitlist!',
         html: `
           <!DOCTYPE html>
           <html>
@@ -101,7 +101,7 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
             <style>
               body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
               .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+              .header { background: #264EFF; color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
               .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
               .button { display: inline-block; background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
               .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
@@ -110,21 +110,21 @@ export const sendWaitlistConfirmation = async (email, position = null) => {
           <body>
             <div class="container">
               <div class="header">
-                <h1>🎉 You're on the Waitlist!</h1>
+              <img src="pointhed.com/logo-white.png" alt="Pointhed Logo" style="max-width: 150px;" />
               </div>
               <div class="content">
                 <p>Hi there!</p>
-                <p>Thanks for joining the Pointhed waitlist. We're excited to have you on board! 🚀</p>
+                <p>Thanks for your interest in Pointhed. We're excited to have you on board! 🚀</p>
                 ${positionText}
                 <p>We're working hard to bring you the best customer loyalty platform for businesses. You'll be among the first to know when we launch.</p>
                 <p><strong>What happens next?</strong></p>
                 <ul>
                   <li>We'll keep you updated on our progress</li>
                   <li>You'll get early access when we launch</li>
-                  <li>Special offers for early adopters</li>
                 </ul>
-                <p>In the meantime, want to try our instant demo?</p>
-                <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" class="button">Try Instant Demo</a>
+                <p>Thanks again</p>
+                <p><strong>Pointhed Team</strong></p>
+          
               </div>
               <div class="footer">
                 <p>© ${new Date().getFullYear()} Pointhed. All rights reserved.</p>
