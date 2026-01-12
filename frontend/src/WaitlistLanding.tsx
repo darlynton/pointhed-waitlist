@@ -1071,10 +1071,10 @@ export function WaitlistLanding() {
                 </span>
               </div>
               <div className="flex items-center gap-8 text-sm text-gray-500">
-                <a href="/privacy" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <a href="/privacy-policy.html" className="text-gray-500 hover:text-gray-900 transition-colors">
                   Privacy Policy
                 </a>
-                <a href="/terms" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <a href="/terms-of-service.html" className="text-gray-500 hover:text-gray-900 transition-colors">
                   Terms of Service
                 </a>
                 {/* <a href="#" className="text-gray-500 hover:text-gray-900 transition-colors">
