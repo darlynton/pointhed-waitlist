@@ -29,7 +29,7 @@ model Waitlist {
 // WhatsApp leads table for instant demo signups
 model WhatsAppLead {
   id           String   @id @default(uuid()) @db.Uuid
-  phoneNumber  String   @map("phone_number") @db.VarChar(20) // formatted: +447404938935
+  phoneNumber  String   @unique @map("phone_number") @db.VarChar(20) // formatted: +447404938935
   countryCode  String   @map("country_code") @db.VarChar(5) // e.g., +44
   rawNumber    String   @map("raw_number") @db.VarChar(20) // original input: 7404938935
   source       String   @default("landing_page") @db.VarChar(100)
@@ -39,7 +39,6 @@ model WhatsAppLead {
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  @@index([phoneNumber])
   @@index([status])
   @@index([createdAt(sort: Desc)])
   @@map("whatsapp_leads")

@@ -646,7 +646,8 @@ export function WaitlistLanding() {
                       )} 
                       <Button
                         type="submit"
-                        className="bg-[var(--primary)] text-[var(--primary-foreground)] h-12 px-6 sm:px-8 font-medium tracking-tight whitespace-nowrap w-full sm:w-auto hover:opacity-90 transition-opacity"
+                        disabled={isSending}
+                        className="bg-[var(--primary)] text-[var(--primary-foreground)] h-12 px-6 sm:px-8 font-medium tracking-tight whitespace-nowrap w-full sm:w-auto hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSending ? 'Sending...' : (ctaMode === 'instant' ? 'Experience Now' : 'Request Access')}
                         <ArrowRight className="size-4 ml-2" />
