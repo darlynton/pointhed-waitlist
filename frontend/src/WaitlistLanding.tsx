@@ -63,6 +63,34 @@ export function WaitlistLanding() {
     { code: '+31', country: 'NL', flag: '🇳🇱' },
     { code: '+61', country: 'AU', flag: '🇦🇺' },
     { code: '+234', country: 'NG', flag: '🇳🇬' },
+    { code: '+86', country: 'CN', flag: '🇨🇳' },
+    { code: '+81', country: 'JP', flag: '🇯🇵' },
+    { code: '+82', country: 'KR', flag: '🇰🇷' },
+    { code: '+91', country: 'IN', flag: '🇮🇳' },
+    { code: '+55', country: 'BR', flag: '🇧🇷' },
+    { code: '+52', country: 'MX', flag: '🇲🇽' },
+    { code: '+27', country: 'ZA', flag: '🇿🇦' },
+    { code: '+971', country: 'AE', flag: '🇦🇪' },
+    { code: '+966', country: 'SA', flag: '🇸🇦' },
+    { code: '+65', country: 'SG', flag: '🇸🇬' },
+    { code: '+60', country: 'MY', flag: '🇲🇾' },
+    { code: '+63', country: 'PH', flag: '🇵🇭' },
+    { code: '+62', country: 'ID', flag: '🇮🇩' },
+    { code: '+66', country: 'TH', flag: '🇹🇭' },
+    { code: '+84', country: 'VN', flag: '🇻🇳' },
+    { code: '+64', country: 'NZ', flag: '🇳🇿' },
+    { code: '+41', country: 'CH', flag: '🇨🇭' },
+    { code: '+46', country: 'SE', flag: '🇸🇪' },
+    { code: '+47', country: 'NO', flag: '🇳🇴' },
+    { code: '+45', country: 'DK', flag: '🇩🇰' },
+    { code: '+48', country: 'PL', flag: '🇵🇱' },
+    { code: '+351', country: 'PT', flag: '🇵🇹' },
+    { code: '+32', country: 'BE', flag: '🇧🇪' },
+    { code: '+43', country: 'AT', flag: '🇦🇹' },
+    { code: '+353', country: 'IE', flag: '🇮🇪' },
+    { code: '+20', country: 'EG', flag: '🇪🇬' },
+    { code: '+254', country: 'KE', flag: '🇰🇪' },
+    { code: '+233', country: 'GH', flag: '🇬🇭' },
   ];
 
   // Major currencies for calculator with realistic ranges
@@ -585,7 +613,7 @@ export function WaitlistLanding() {
                           <select
                             value={countryCode}
                             onChange={(e) => setCountryCode(e.target.value)}
-                            className="appearance-none leading-none bg-white border border-gray-200 text-gray-900 text-sm h-12 px-2 sm:px-3 pr-8 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjMTExODI3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_0.75rem_center] bg-no-repeat"
+                            className="appearance-none leading-none bg-white border border-gray-200 text-gray-900 text-sm h-12 px-3 pr-10 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjMTExODI3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_0.875rem_center] bg-no-repeat"
                           >
                             {countryCodes.map((country, index) => (
                               <option key={index} value={country.code}>
@@ -597,7 +625,7 @@ export function WaitlistLanding() {
                             type="tel"
                             value={phoneNumber}
                             onChange={(e) => { setPhoneNumber(e.target.value); setErrorMessage(null); setSuccessMessage(null); setInfoMessage(null); }}
-                            placeholder="7404 938 935"
+                            placeholder="7123 938 935"
                             required
                             pattern="[0-9\s\-\(\)]{7,12}"
                             title="Enter a valid phone number (7-12 digits)"
